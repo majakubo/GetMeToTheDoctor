@@ -10,8 +10,20 @@ app.secret_key = 'superKEYsuperSECRETWHATOUT'
 api = Api(app)
 
 class Index(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('message',
+                        type=str,
+                        help='say hi to heroku'
+                        )
     def get(self):
         return {"message": "Hello world"}
+
+    def post(self):
+        data = Index.parser.parse_args()
+        print('***********{}********'.format(data['message']))
+
+
+
 
 
 api.add_resource(Index, '/')
