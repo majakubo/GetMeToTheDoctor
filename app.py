@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
-from flask_jwt import JWT
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
