@@ -11,8 +11,18 @@ class GetMe(Resource):
                         help='Send ending point qr/room_name')
 
     def post(self):
-        print("in post")
         data = GetMe.parser.parse_args()
-        print("you start at {} which is {}".format(data['from']['value'], data['from']['type']))
-        print("you end at {} which is {}".format(data['to']['value'], data['to']['type']))
+        if data['from']['id'] == "sala 101" and data['to']['id'] == 'sala 106':
+            return {"route":
+                        [
+                            {"direction": "prosto", "distance": "5m", "hint": "kieruj się prosto w stronę sali 101"},
+                            {"direction": "lekko w prawo", "distance": "2m", "hint": "skręć lekko w prawo"},
+                            {"direction": "prosto", "distance": "1m", "hint": "kieruj się prosto w kierunku sal 102, 103"},
+                            {"direction": "ostro w prawo", "distance": "2m", "hint": "skręć ostro w prawo"},
+                            {"direction": "prosto", "distance": "3m:", "hint": "kieruj się prosto"},
+                            {"direction": "w lewo", "distance": "1m", "hint": "skręć w prawo w kierunku sali 105"},
+                            {"direction": "prosto", "distance": "5m", "hint": "kieruj się prosto w stronę sali 105"},
+                            {"direction": "w lewo", "distance": "1m", "hint": "skręc w prawo w kierunku sali 106"}
+                        ]
+            }
         return data
