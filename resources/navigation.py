@@ -5,10 +5,12 @@ class GetMe(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('from',
                         type=dict,
+                        required=True,
                         help='Send starting point qr/room_name')
     parser.add_argument('to',
                         type=dict,
-                        help='Send ending point qr/room_name')
+                        required=True,
+                        help='You need to type')
 
     def post(self):
         data = GetMe.parser.parse_args()
