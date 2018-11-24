@@ -1,11 +1,11 @@
 import os
 from flask import Flask, request
 from flask_restful import Resource, Api, reqparse
-from flask_jwt import JWT
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqllite:///data.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.secret_key = 'superKEYsuperSECRETWHATOUT'
 api = Api(app)
 
