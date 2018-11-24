@@ -1,4 +1,7 @@
 from flask_restful import Resource, reqparse
+from models.doctors import Doctor
+from models.offices import Office
+from models.shifts import Shift
 
 
 class GetMe(Resource):
