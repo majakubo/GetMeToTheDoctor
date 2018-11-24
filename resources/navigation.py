@@ -15,4 +15,4 @@ class GetMe(Resource):
         data = GetMe.parser.parse_args()
         print("you start at {} which is {}".format(data['from']['value'], data['from']['type']))
         print("you end at {} which is {}".format(data['to']['value'], data['to']['type']))
-        return {'message': 'is it your mistake or mine'}
+        return {"message": "is it your mistake or mine"}
