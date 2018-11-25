@@ -17,9 +17,10 @@ def navigation_description(graph, frm, to):
 def parse_guided_path(simplified_path):
     guided_path = []
     for step in simplified_path:
+        print(step)
         direction, weight, rooms = step
         hint = parse_neighbors_to_hint(rooms)
-        guided_path.append({"direction": direction, "distance": weight, "hint": hint})
+        guided_path.append({"direction": direction, "distance": weight})
     return guided_path
 
 
@@ -35,7 +36,7 @@ def parse_neighbors_to_hint(rooms):
 
         return hint
 
-    return ""
+    return " "
 
 
 def convert_to_edges(route):
@@ -84,7 +85,7 @@ def simplify_path(path):
             simplified_path.append(edge)
 
     if summary > 0:
-        simplified_path.append(('Straight', summary))
+        simplified_path.append(('Straight', summary, []))
 
     print(simplified_path)
     return simplified_path
