@@ -33,11 +33,12 @@ def load_graph_to_memory(filename):
 
 
 def load_offices_to_database(graph):
+
     for node_id in graph.nodes():
         node_data = graph.node[node_id]
         if node_data['type'] == 'room':
-            db.session.add(Office(node_id, 2))
-
+            db.session.add(Office(node_id, node_id))
+    db.session.add(Office(116, 'HACKYEAH2018_001'))
     db.session.commit()
 
 

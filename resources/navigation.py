@@ -23,7 +23,7 @@ class GetMe(Resource):
             if data['from']['type'] == 'Room':
                 frm = data['from']['id']
             elif data['from']['type'] == 'QR':
-                frm = Office.query.filter_by(qr_code=data['from']['id']).first().id
+                frm = data['from']['id']
 
             if data['to']['type'] == 'Room':
                 to = data['to']['id']

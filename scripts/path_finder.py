@@ -21,7 +21,7 @@ def parse_guided_path(simplified_path):
         direction, weight, rooms = step
         hint = parse_neighbors_to_hint(rooms)
         guided_path.append({"direction": direction, "distance": weight})
-    return guided_path
+    return {"route": guided_path}
 
 
 def parse_neighbors_to_hint(rooms):
