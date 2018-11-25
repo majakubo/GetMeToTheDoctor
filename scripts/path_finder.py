@@ -1,6 +1,6 @@
 from networkx import dijkstra_path, Graph
 import math
-
+import math
 def find_path_with_description(graph, frm, to):
     route = dijkstra_path(graph, frm, to, 'weight')
     edges_path = convert_to_edges(route)
@@ -69,3 +69,36 @@ def add_hints(route):
 
 def render_route(route):
     pass
+
+
+
+def direction_wrapper(graph, before, corner, after):
+    return direction(graph.node[before]['x'], graph.node[before]['y'],
+                     graph.node[corner]['x'], graph.node[corner]['y'],
+                     graph.node[after]['x'], graph.node[after]['y']
+                     )
+
+def direction(x_before, y_before, x_corner, y_corner, x_next, y_next):
+    path_to_corner = (x_corner - x_before, y_corner - y_before)
+    path_after_corner = (x_next - x_corner, (y_next - y_corner))
+    scalar = path_to_corner[0]*path_after_corner[0] + path_to_corner[1]*path_after_corner[1]
+    len_path_to_corner = math.sqrt(path_to_corner[0]**2 + path_to_corner[1]**2)
+    len_path_after_corner = math.sqrt(path_after_corner[0]**2 + path_after_corner[1]**2)
+
+    deg = math.acos((scalar)/(len_path_after_corner)*(len_path_to_corner))
+    deg = deg * 180/math.pi
+
+    if deg >= 0 and deg <= 60:
+        return "Ostry Skret Prawo"
+    elif deg > 60 and deg <= 110:
+        return "w Prawo"
+    elif deg > 110 and deg <= 160:
+        return "Lekki skret w prawo"
+    elif deg > 160 and deg <= 200:
+        return "Prosto"
+    elif deg > 200 and deg <= 250:
+        return "Lekki skret w lewo"
+    elif deg > 250 and deg <= 290:
+        return "skre w Lewo"
+    elif deg > 290 and deg < 360:
+        return "Ostry skret w lewo"
