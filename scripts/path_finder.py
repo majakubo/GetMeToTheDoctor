@@ -125,7 +125,7 @@ def gimme_direction(before, corner, after):
         'Straight',
         'Slight right',
         'Right',
-        'Sharp-right']
+        'Sharp right']
 
     second_triangle = (after[0] - corner[0], after[1] - corner[1])
     first_triangle = (before[0] - corner[0], before[1] - corner[1])
