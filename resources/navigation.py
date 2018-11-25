@@ -4,7 +4,7 @@ from models.offices import Office
 from models.shifts import Shift
 from scripts.json_loader import load_graph_to_memory
 from networkx import Graph
-from scripts.path_finder import find_path_with_description
+from scripts.path_finder import navigation_description
 class GetMe(Resource):
     graph = load_graph_to_memory('map.json')
     parser = reqparse.RequestParser()
@@ -29,8 +29,9 @@ class GetMe(Resource):
                 to = data['to']['id']
             elif data['to']['type'] == 'Doctor':
                 to = None
+            print("from {} to {}".format(frm, to))
 
-            return find_path_with_description(GetMe.graph, frm, data['to']['id'])
+            return navigation_description(GetMe.graph, int(frm), int(data['to']['id']))
 
         else:
             return {"message": "not valid params"}
