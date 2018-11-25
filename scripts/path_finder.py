@@ -8,6 +8,7 @@ def navigation_description(graph, frm, to):
     edges_path = convert_to_edges(path)
     weights = weight_of_edges(graph, edges_path)
     directions = directions_of_edges(graph, path)
+    print(directions)
     rooms = find_rooms_along_the_way(graph, path)
     navigated_path = list(zip(directions, weights, rooms))
     return parse_guided_path(simplify_path(navigated_path))
@@ -18,7 +19,7 @@ def parse_guided_path(simplified_path):
     for step in simplified_path:
         direction, weight, rooms = step
         hint = parse_neighbors_to_hint(rooms)
-        guided_path.append({"direction": direction, "distance": weight})
+        guided_path.append({"direction": direction, "distance": weight, "hint": hint})
     return guided_path
 
 
@@ -50,7 +51,7 @@ def convert_to_edges(route):
 def find_rooms_incident(graph, node):
     rooms = []
     for neighbor in g.neighbors(node):
-        if g.nodes[neighbor]['type'] == 'room':
+        if graph.nodes[neighbor]['type'] == 'room':
             rooms.append(neighbor)
     return rooms
 
@@ -107,41 +108,39 @@ def directions_of_edges(graph, path):
         current_y = graph.nodes[path[i + 1]]['y']
         next_x = graph.nodes[path[i + 2]]['x']
         next_y = graph.nodes[path[i + 2]]['y']
-        dir = direction(before_x, before_y, current_x, current_y, next_x, next_y)
+        dir = gimme_direction((-before_x, before_y), (-current_x, current_y), (-next_x, next_y))
         directions.append(dir)
 
     return directions
 
 
-def direction(x_before, y_before, x_corner, y_corner, x_next, y_next):
-    a = (y_corner - y_before) / (x_corner - x_before)
-    b = (y_before - a * x_before)
-    path_to_corner = (x_corner - x_before, y_corner - y_before)
-    path_after_corner = (x_next - x_corner, (y_next - y_corner))
-    scalar = path_to_corner[0] * path_after_corner[0] + path_to_corner[1] * path_after_corner[1]
-    len_path_to_corner = math.sqrt(path_to_corner[0] ** 2 + path_to_corner[1] ** 2)
-    len_path_after_corner = math.sqrt(path_after_corner[0] ** 2 + path_after_corner[1] ** 2)
-    if y_next < ((a * x_next) + b):  # to jest skret w prawo
-        deg = math.acos((scalar) / (len_path_after_corner) * (len_path_to_corner))
-        deg = deg * (180 / math.pi)
-        if deg >= 0 and deg <= 70:
-            return "Sharp Right"
-        elif deg > 70 and deg <= 110:
-            return "Right"
-        elif deg > 110 and deg <= 160:
-            return "Slight Right"
-        elif deg > 160 and deg <= 180:
-            return "Straight"
-    elif y_next > ((a * x_next) + b):  # to jest skret w lewo
-        deg = math.acos((scalar) / (len_path_after_corner) * (len_path_to_corner))
-        deg = deg * (180 / math.pi)
-        if deg >= 0 and deg <= 70:
-            return "Light Left"
-        elif deg > 70 and deg <= 110:
-            return "Left"
-        elif deg > 110 and deg <= 160:
-            return "Sharp Left"
-        elif deg > 160 and deg <= 180:
-            return "Straight"
-    else:
-        return "Straight"
+
+def gimme_direction(before, corner, after):
+    directions = [
+        'turn-around',
+        'Sharp left',
+        'Left',
+        'Slight left',
+        'Straight',
+        'Slight right',
+        'Right',
+        'Sharp-right']
+
+    second_triangle = (after[0] - corner[0], after[1] - corner[1])
+    first_triangle = (before[0] - corner[0], before[1] - corner[1])
+    angle2 = math.degrees(math.atan2(second_triangle[1], second_triangle[0]))
+    angle1 = math.degrees(math.atan2(first_triangle[1], first_triangle[0]))
+    if angle1 < 0:
+        angle1 = 360 + angle1
+    if angle2 < 0:
+        angle2 = 360 + angle2
+    angle = angle1 - angle2
+    if angle < 0:
+        angle = 360 + angle
+    print(angle)
+    index = round(angle / 45) % 8
+    return directions[index]
+
+
+
+
